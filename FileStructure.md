@@ -6,10 +6,10 @@
 
   * [*使用示例*](#使用示例)
     1. Map
-    2. Player
-    3. Ghost
-    4. ClockBase
-    5. closurer
+    2. closurer
+    3. ClockBase
+    4. Player
+    5. Ghost
 
   * [*实现期望*](#实现期望)
     * [TODO](#todo)
