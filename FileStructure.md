@@ -233,7 +233,8 @@
 ### 2. ***`closurer`***
 <details>
     <summary>示例</summary>
-    * 用法
+
+  * 用法
     ```python
     def hello(greeting, *, name):
         print(greeting, name)
