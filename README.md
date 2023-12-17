@@ -12,9 +12,9 @@
 ---
 
 ## 文件内容代码目录
-  * [ItemsOperator.py](#ItemsOperator.py)
-  * [SupportBases.py](#SupportBases.py)
-  * [main.py](#main.py)
+  * [ItemsOperator.py](#itemsoperatorpy)
+  * [SupportBases.py](#supportbasespy)
+  * [main.py](#mainpy)
 
 
 ### ItemsOperator.py
