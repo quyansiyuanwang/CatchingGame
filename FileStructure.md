@@ -5,11 +5,11 @@
     3. [main.py](#mainpy)
 
   * [*使用示例*](#使用示例)
-    1. [Map](#map)
-    2. [Player](#player) 
-    3. [Ghost](#ghost)
-    4. [ClockBase](#clockbase)
-    5. [closurer](#closurer)
+    1. Map
+    2. Player
+    3. Ghost
+    4. ClockBase
+    5. closurer
 
   * [*实现期望*](#实现期望)
     * [TODO](#todo)
