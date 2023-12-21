@@ -191,7 +191,7 @@
         return SupportBases.Map(
             ([ItemsOperator.Floor() for _ in range(a)] for _ in range(b)), 
             a, b
-            )
+        )
     
     m = create_map(3, 4)  # 长3高4的地图
     ```
@@ -239,9 +239,11 @@
     def hello(greeting, *, name):
         print(greeting, name)
 
-    close_package = closurer(hello, 
-                             'Missing you like wildfire', 
-                             name='Cheng')
+    close_package = closurer(
+        hello, 
+        'Missing you like wildfire', 
+        name='Cheng'
+    )
     close_package()
     
     # output:
@@ -283,11 +285,13 @@
 
   * 实例化
     ```python
-    p = ItemsOperator.Player(map=m, 
-                             spawn=(0, 0), 
-                             blood=100, 
-                             speed=100, 
-                             clock=c)
+    p = ItemsOperator.Player(
+        map=m, 
+        spawn=(0, 0), 
+        blood=100, 
+        speed=100, 
+        clock=c
+    )
     ```
 
   * 移动
@@ -305,11 +309,13 @@
 
   * 实例化
     ```python
-    g = ItemsOperator.Ghost(map=m, 
-                            spawn=(4, 4), 
-                            blood=100, 
-                            speed=80, 
-                            clock=c)
+    g = ItemsOperator.Ghost(
+        map=m, 
+        spawn=(4, 4), 
+        blood=100, 
+        speed=80, 
+        clock=c
+    )
     ```
 
   * 移动
