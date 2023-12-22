@@ -10,7 +10,7 @@ def create_map(a: int, b: int):
     return SupportBases.Map(
         ([ItemsOperator.Floor() for _ in range(a)] for _ in range(b)), 
         a, b
-        )
+    )
 
 def keyboard_reflect(key: str):
     refl = {
@@ -34,8 +34,8 @@ def user_enter_monitor():
 def test():
     m = create_map(6, 6)
     c = SupportBases.ClockBase([], sTD(30)) # FPS
-    p = ItemsOperator.Player(map=m, spawn=(0, 0), blood=100, speed=100, clock=c)
-    g = ItemsOperator.Ghost(map=m, spawn=(4, 4), blood=100, speed=80, clock=c)
+    p = ItemsOperator.Player(game_map=m, spawn=(0, 0), blood=100, speed=100, clock=c)
+    g = ItemsOperator.Ghost(game_map=m, spawn=(4, 4), blood=100, speed=80, clock=c)
     
     def ghost_move():
         x, y = g.location
@@ -56,6 +56,7 @@ def test():
                 break
         
     c.stop()
+    c.join()
     print(info)
     
 if __name__ == '__main__':

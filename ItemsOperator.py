@@ -25,9 +25,9 @@ class Item:
 
 
 class Person(Item):
-    def __init__(self, map, spawn: Location, blood: int, speed: int, clock: ClockBase):
+    def __init__(self, game_map, spawn: Location, blood: int, speed: int, clock: ClockBase):
         super().__init__()
-        self.map = map
+        self.game_map = game_map
         self.clock = clock
         
         self.visualable = self.moveable = self.attackable = self.hurtable = True
@@ -37,35 +37,35 @@ class Person(Item):
         self.location = spawn
         self.last_pos_infos: Literal['Location', 'Item'] = {
             'Location': self.location, 
-            'Item': self.map[self.location]
+            'Item': self.game_map[self.location]
             }
         self.last_move_time = clock.now
         
     def move(self, toward: Toward):
-        raise NotImplemented('The method shuld be overrided instead of using it.')
+        raise NotImplementedError('The method shuld be overrided instead of using it.')
 
     def _real_move(self, pos, new_pos):
         cached_last_infos = self.last_pos_infos
         self.last_pos_infos = {
             'Location': new_pos, 
-            'Item': self.map[new_pos]
+            'Item': self.game_map[new_pos]
         }
         
         self.location = new_pos
-        return self.map.update({
+        return self.game_map.update({
             cached_last_infos['Location']: cached_last_infos['Item'],
             new_pos: self
         })
     
 
 class Player(Person):
-    def __init__(self, map, spawn: Location, blood: int, speed: Digit, clock: ClockBase):
-        super().__init__(map, spawn, blood, speed, clock)
+    def __init__(self, game_map, spawn: Location, blood: int, speed: Digit, clock: ClockBase):
+        super().__init__(game_map, spawn, blood, speed, clock)
         self.location = spawn
         self.reconization = 'P'
         self.speed = speed
         """断言层"""
-        assert self.map.update({spawn: self}), 'spawn point should be Floor'
+        assert self.game_map.update({spawn: self}), 'spawn point should be Floor'
         
     def move(self, toward: Toward):
         now = self.clock.now
@@ -78,9 +78,9 @@ class Player(Person):
         except_location = (x + incre_x, y + incre_y)
         self.last_move_time = now
         # 是否在地图内
-        if except_location not in self.map:
+        if except_location not in self.game_map:
             return True, GameStateConsts.towardError
-        new_pos_content = self.map[except_location]
+        new_pos_content = self.game_map[except_location]
         # 游戏内容判断
         # 碰鬼（结束）
         if isinstance(new_pos_content, Ghost):
@@ -98,13 +98,13 @@ class Player(Person):
             
 
 class Ghost(Person):
-    def __init__(self, map, spawn: Location, blood: int, speed: Digit, clock: ClockBase):
-        super().__init__(map, spawn, blood, speed, clock)
+    def __init__(self, game_map, spawn: Location, blood: int, speed: Digit, clock: ClockBase):
+        super().__init__(game_map, spawn, blood, speed, clock)
         self.location = spawn
         self.reconization = 'G'
         self.speed = speed
         """断言层"""
-        assert self.map.update({spawn: self}), 'spawn point should be Floor'
+        assert self.game_map.update({spawn: self}), 'spawn point should be Floor'
     
     def move(self, toward: Toward):
         now = self.clock.now
@@ -117,9 +117,9 @@ class Ghost(Person):
         except_location = (x + incre_x, y + incre_y)
         self.last_move_time = now
         # 是否在地图内
-        if except_location not in self.map:
+        if except_location not in self.game_map:
             return True, GameStateConsts.towardError
-        new_pos_content = self.map[except_location]
+        new_pos_content = self.game_map[except_location]
         # 游戏内容判断
         # 碰玩家（结束）
         if isinstance(new_pos_content, Player):

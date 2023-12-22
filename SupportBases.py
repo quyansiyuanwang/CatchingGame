@@ -1,4 +1,4 @@
-import threading
+import threading as threadingLib
 import time
 from typing import List, Dict, Tuple, Final, TypeVar
 
@@ -104,7 +104,7 @@ class Map(list):
         return any(target in line for line in self)
     
 
-class ClockBase(threading.Thread):
+class ClockBase(threadingLib.Thread):
     def __init__(self, threadings: list, strick_time: int, stop: bool = False):
         """Clock事件耦合触发器
 
@@ -149,7 +149,8 @@ class ClockBase(threading.Thread):
                 if self.threadings[idx][3] == 0:
                     pop_stack.append(idx)
             
-            if self.now < strick_time: break
+            if self.now < strick_time:
+                break
                 
         while pop_stack:
             tar_idx = pop_stack.pop()
@@ -162,7 +163,8 @@ class ClockBase(threading.Thread):
     def run(self):
         # TODO
         while True:
-            if self.__stop: exit(self.__stop)
+            if self.__stop:
+                exit(self.__stop)
             results = self.trigger()
             
             for result in results:
