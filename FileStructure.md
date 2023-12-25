@@ -215,9 +215,9 @@
     <summary><font size="4">前提</font></summary>
 
 ```python
-    from typing import Tuple
+from typing import Tuple
 
-    Toward = Location = Tuple[int, int]
+Toward = Location = Tuple[int, int]
 ```
 
 </details>
@@ -231,51 +231,51 @@
 - 创建地图
 
 ```python
-  def create_map(a: int, b: int):
-      return SupportBases.Map(
-          ([ItemsOperator.Floor() for _ in range(a)] for _ in range(b)),
-          a, b
-      )
+def create_map(a: int, b: int):
+  return SupportBases.Map(
+      ([ItemsOperator.Floor() for _ in range(a)] for _ in range(b)),
+      a, b
+  )
 
-  m = create_map(3, 4)  # 长3高4的地图
+m = create_map(3, 4)  # 长3高4的地图
 ```
 
 - 获取内容
 
 ```python
-  location: Location = (0, 1)
-  m[location]  # 获取(0, 1)位置的内容
+location: Location = (0, 1)
+m[location]  # 获取(0, 1)位置的内容
 ```
 
 - 设置内容
 
 ```python
-  m[location] = ItemsOperator.Player()  # 设置location位置内容为player()
+m[location] = ItemsOperator.Player()  # 设置location位置内容为player()
 ```
 
 - 在地图内
 
 ```python
-  location in m  # location是否在地图范围内 T/F
+location in m  # location是否在地图范围内 T/F
 ```
 
 - 打印地图
 
 ```python
-  print(m)
+print(m)
 ```
 
 - 包含内容
 
 ```python
-  target = ItemsOperator.Floor()
-  m.isExist(target)  # 是否存在地板元素 T/F
+target = ItemsOperator.Floor()
+m.isExist(target)  # 是否存在地板元素 T/F
 ```
 
 - 充满内容
 ```python
-    target = ItemsOperator.Floor()
-    m.isFullOf(target)  # 是否全部为地板元素 T/F
+target = ItemsOperator.Floor()
+m.isFullOf(target)  # 是否全部为地板元素 T/F
 ```
 </details>
 <br></br>
@@ -288,18 +288,18 @@
 - 用法
 
 ```python
-  def hello(greeting, \*, name):
-      print(greeting, name)
+def hello(greeting, \*, name):
+  print(greeting, name)
 
-  close_package = closure_device(
-      hello,
-      'Missing you like wildfire',
-      name='Cheng'
-  )
-  close_package()
+close_package = closure_device(
+  hello,
+  'Missing you like wildfire',
+  name='Cheng'
+)
+close_package()
 
-  # output:
-  # Missing you like wildfire  Cheng
+# output:
+# Missing you like wildfire  Cheng
 ```
 
 </details>
@@ -312,25 +312,25 @@
 
 - 实例化
 ```python
-    c = SupportBases.ClockBase([], 33) # 约30FPS
-    """c.thread_add([struck_time, increment_time, threading, pop, kwargs])
-    
-    Args:
-        struck_time(int): ms, 触发时间
-        increment_time(int): ms, 触发后`struck_time`的时间增量
-        threading(callable): 运行的函数
-        pop(int): 执行次数几次后弹出, 当其 <0 时 不弹出
-        kwargs(dict): 关键词传参
-    """
-    # 0ms时触发, 增量1000ms, 线程为`Ghost().move`, 关键参 toward
-    c.thread_add([0, 1000, Ghost().move, -1, {'toward': (1, 0)}])
-    # 0ms时触发, 增量33ms, 线程为`print(m)`(打印地图), 关键参 无
-    c.thread_add([0, 33, closure_device(print, m), -1, {}])
-    c.start()  # 开始执行
-    ...
-    raise NotImplemented('你的其他代码实现')
-    ...
-    c.stop()  # 停止执行
+c = SupportBases.ClockBase([], 33) # 约30FPS
+"""c.thread_add([struck_time, increment_time, threading, pop, kwargs])
+
+Args:
+    struck_time(int): ms, 触发时间
+    increment_time(int): ms, 触发后`struck_time`的时间增量
+    threading(callable): 运行的函数
+    pop(int): 执行次数几次后弹出, 当其 <0 时 不弹出
+    kwargs(dict): 关键词传参
+"""
+# 0ms时触发, 增量1000ms, 线程为`Ghost().move`, 关键参 toward
+c.thread_add([0, 1000, Ghost().move, -1, {'toward': (1, 0)}])
+# 0ms时触发, 增量33ms, 线程为`print(m)`(打印地图), 关键参 无
+c.thread_add([0, 33, closure_device(print, m), -1, {}])
+c.start()  # 开始执行
+...
+raise NotImplemented('你的其他代码实现')
+...
+c.stop()  # 停止执行
 ```
 </details>
 <br></br>
@@ -343,21 +343,21 @@
 - 实例化
 
 ```python
-  p = ItemsOperator.Player(
-      game_map=m,
-      spawn=(0, 0),
-      blood=100,
-      speed=100,
-      clock=c
-  )
+p = ItemsOperator.Player(
+  game_map=m,
+  spawn=(0, 0),
+  blood=100,
+  speed=100,
+  clock=c
+)
 ```
 
 - 移动
 ```python
-    toward: Toward = (0, 1)
-    running, info = p.move(toward)
-    # running 代表是否继续进行游戏 T/F
-    # info 一般来自`GameStateConsts`类, 额外用于判断的详细信息
+toward: Toward = (0, 1)
+running, info = p.move(toward)
+# running 代表是否继续进行游戏 T/F
+# info 一般来自`GameStateConsts`类, 额外用于判断的详细信息
 ```
 </details>
 <br></br>
@@ -370,21 +370,21 @@
 - 实例化
 
 ```python
-  g = ItemsOperator.Ghost(
-      game_map=m,
-      spawn=(4, 4),
-      blood=100,
-      speed=80,
-      clock=c
-  )
+g = ItemsOperator.Ghost(
+  game_map=m,
+  spawn=(4, 4),
+  blood=100,
+  speed=80,
+  clock=c
+)
 ```
 
 - 移动
 ```python
-    toward: Toward = (0, 1)
-    running, info = g.move(toward)
-    # running 代表是否继续进行游戏 T/F
-    # info 一般来自GameStateConsts类, 额外用于判断的详细信息
+toward: Toward = (0, 1)
+running, info = g.move(toward)
+# running 代表是否继续进行游戏 T/F
+# info 一般来自GameStateConsts类, 额外用于判断的详细信息
 ```
 </details>
 <br></br>
