@@ -65,8 +65,11 @@ class Player(Person):
         self.identifying = 'P'
         self.speed = speed
         """断言层"""
-        assert self.game_map.update(
-            {spawn: self}), 'spawn point should be Floor'
+        assert isinstance(self.game_map[spawn], Floor), 'spawn point should be Floor'
+        """初始生成"""
+        self.game_map.update({
+            spawn: self
+        })
 
     def move(self, toward: Toward):
         now = self.clock.now
@@ -105,8 +108,11 @@ class Ghost(Person):
         self.identifying = 'G'
         self.speed = speed
         """断言层"""
-        assert self.game_map.update(
-            {spawn: self}), 'spawn point should be Floor'
+        assert isinstance(self.game_map[spawn], Floor), 'spawn point should be Floor'
+        """初始生成"""
+        self.game_map.update({
+            spawn: self
+        })
 
     def move(self, toward: Toward):
         now = self.clock.now

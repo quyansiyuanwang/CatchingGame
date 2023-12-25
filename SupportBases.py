@@ -2,7 +2,7 @@ import time
 import threading as threadingLib
 
 from typing import Dict, Tuple, Final
-from ItemsOperator import Floor
+
 
 Location = Toward = Tuple[int, int]
 Digit = int | float
@@ -75,7 +75,7 @@ class Map(list):
             bool: 是否更新成功 T/F
         """
         for location, player in dictionary.items():
-            if isinstance(self[location], Floor):
+            if location not in self:
                 return False
 
             self[location] = player
