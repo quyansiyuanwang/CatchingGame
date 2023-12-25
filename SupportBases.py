@@ -1,7 +1,7 @@
-import threading as threadingLib
 import time
-from typing import Dict, Tuple, Final
+import threading as threadingLib
 
+from typing import Dict, Tuple, Final
 from ItemsOperator import Floor
 
 Location = Toward = Tuple[int, int]
@@ -35,7 +35,7 @@ class Map(list):
 
         Args:
             location (Location): 需要检测的位置
-            
+
         Returns:
             返回是否在对象内 T/F
         """
@@ -84,7 +84,7 @@ class Map(list):
     def isFullOf(self, target: any) -> bool:
         """判断地图是否存在非target因素
         warning: 该判断逻辑为逻辑运算符 `=`,非 `is`
-        
+
         Args:
             target (any): 检测的目标内容
 
@@ -96,7 +96,7 @@ class Map(list):
     def isExist(self, target: any) -> bool:
         """判断地图是否存在target因素
         warning: 该判断逻辑为运算 `in`
-        
+
         Args:
             target (any): 检测的目标内容
 
@@ -142,7 +142,7 @@ class ClockBase(threadingLib.Thread):
     def trigger(self):
         pop_stack = []
         for idx, (struck_time, increment_time, threading, pop, kwargs) in enumerate(self.threading):
-            # TODO 
+            # TODO
             if self.now > struck_time:
                 self.threading[idx][0] += increment_time
                 yield threading()
@@ -193,7 +193,7 @@ def speed_time_disposer(value: Digit) -> Digit:
 
     Args:
         value (Digit): 等待时间/速度
-        
+
     Returns:
         等待时间/速度 (Digit)
     """
@@ -202,7 +202,8 @@ def speed_time_disposer(value: Digit) -> Digit:
 
 def _test():
     c = ClockBase([], speed_time_disposer(30))
-    c.thread_add([0, speed_time_disposer(1), closure_device(print, 'hello'), 5, {}])
+    c.thread_add([0, speed_time_disposer(
+        1), closure_device(print, 'hello'), 5, {}])
     c.start()
     t = 5
     while t > 0:

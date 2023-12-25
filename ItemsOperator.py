@@ -1,5 +1,5 @@
-from SupportBases import Location, Toward, GameStateConsts, ClockBase, Digit
 from typing import Optional, Literal, Dict, Any
+from SupportBases import Location, Toward, GameStateConsts, ClockBase, Digit
 
 
 class Item:
@@ -12,10 +12,10 @@ class Item:
         self.interactive = False  # 可操作的
         self.assailable = False  # 可攻击的
         self.vulnerable = False  # 可伤害的(代表有血条)
-        
+
         self.blood = None  # 血条
         self.speed = None  # 移动速度
-        
+
         """."""
         self.identifying: Optional[str] = None  # 显示标识
 
@@ -28,34 +28,35 @@ class Person(Item):
         super().__init__()
         self.game_map = game_map
         self.clock = clock
-        
+
         self.visible = self.movable = self.assailable = self.vulnerable = True
         self.blood = blood
         self.speed = speed
-        
+
         self.location = spawn
         self.last_pos_info: Dict[Literal['Location', 'Item'], Any] = {
-            'Location': self.location, 
+            'Location': self.location,
             'Item': self.game_map[self.location]
-            }
+        }
         self.last_move_time = clock.now
-        
+
     def move(self, toward: Toward):
-        raise NotImplementedError('The method should be override instead of using it.')
+        raise NotImplementedError(
+            'The method should be override instead of using it.')
 
     def _real_move(self, new_pos):
         cached_last_info = self.last_pos_info
         self.last_pos_info = {
-            'Location': new_pos, 
+            'Location': new_pos,
             'Item': self.game_map[new_pos]
         }
-        
+
         self.location = new_pos
         return self.game_map.update({
             cached_last_info['Location']: cached_last_info['Item'],
             new_pos: self
         })
-    
+
 
 class Player(Person):
     def __init__(self, game_map, spawn: Location, blood: int, speed: Digit, clock: ClockBase):
@@ -64,8 +65,9 @@ class Player(Person):
         self.identifying = 'P'
         self.speed = speed
         """断言层"""
-        assert self.game_map.update({spawn: self}), 'spawn point should be Floor'
-        
+        assert self.game_map.update(
+            {spawn: self}), 'spawn point should be Floor'
+
     def move(self, toward: Toward):
         now = self.clock.now
         # 移动速度判断
@@ -94,7 +96,7 @@ class Player(Person):
         # 碰墙（不移动）
         elif isinstance(new_pos_content, Wall):
             return True, GameStateConsts.crashWall
-            
+
 
 class Ghost(Person):
     def __init__(self, game_map, spawn: Location, blood: int, speed: Digit, clock: ClockBase):
@@ -103,8 +105,9 @@ class Ghost(Person):
         self.identifying = 'G'
         self.speed = speed
         """断言层"""
-        assert self.game_map.update({spawn: self}), 'spawn point should be Floor'
-    
+        assert self.game_map.update(
+            {spawn: self}), 'spawn point should be Floor'
+
     def move(self, toward: Toward):
         now = self.clock.now
         # 移动速度判断
@@ -130,8 +133,8 @@ class Ghost(Person):
         # 碰墙（不移动）
         elif isinstance(new_pos_content, Wall):
             return True, GameStateConsts.crashWall
-     
-    
+
+
 class Wall(Item):
     def __init__(self):
         super().__init__()

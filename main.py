@@ -1,7 +1,10 @@
 import keyboard
+
 from random import choice
+
 import ItemsOperator
 import SupportBases
+
 from SupportBases import speed_time_disposer as sTD
 from SupportBases import closure_device
 
@@ -37,8 +40,19 @@ def user_enter_monitor():
 def test():
     m = create_map(6, 6)
     c = SupportBases.ClockBase([], sTD(30))  # FPS
-    p = ItemsOperator.Player(game_map=m, spawn=(0, 0), blood=100, speed=100, clock=c)
-    g = ItemsOperator.Ghost(game_map=m, spawn=(4, 4), blood=100, speed=80, clock=c)
+    p = ItemsOperator.Player(
+        game_map=m,
+        spawn=(0, 0),
+        blood=100,
+        speed=100,
+        clock=c
+    )
+    g = ItemsOperator.Ghost(
+        game_map=m,
+        spawn=(4, 4),
+        blood=100,
+        speed=80, clock=c
+    )
 
     def ghost_move():
         res, g_info = g.move(keyboard_reflect(choice(('a', 'w', 's', 'd'))))
