@@ -27,8 +27,8 @@ class Person(Item):
     def __init__(self, 
                  game_map: Map, 
                  spawn: Location, 
-                 blood: int, 
-                 speed: int, 
+                 blood: Digit, 
+                 speed: Digit, 
                  clock: ClockBase) -> None:
         # 实例定义
         super().__init__()
