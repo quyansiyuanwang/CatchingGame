@@ -1,12 +1,11 @@
 import time
 import threading as threadingLib
-
-from typing import Dict, Tuple, Final
+from typing import Dict, Tuple, Final, Any, Literal, List
 
 
 Location = Toward = Tuple[int, int]
 Digit = int | float
-
+MoveInfo = Dict[Literal['Location', 'Item'], Any]
 
 class GameStateConsts:
     MeetGhost: Final[str] = 'You was caught by ghost'
@@ -18,17 +17,17 @@ class GameStateConsts:
 
 
 class Map(list):
-    def __init__(self, arg: any, a: int, b: int) -> None:
+    def __init__(self, arg: Any, a: int, b: int) -> None:
         """地图初始化
 
         Args:
-            arg (any): 继承list的第一个arg
+            arg (Any): 继承list的第一个arg
         """
         # 以下属性不应被修改
         # 基础类全局变量区
         super().__init__(arg)
-        self.a = a
-        self.b = b
+        self.a: int = a
+        self.b: int = b
 
     def __contains__(self, location: Location) -> bool:
         """判断坐标是否位于对象内
@@ -44,11 +43,11 @@ class Map(list):
             return False
         return True
 
-    def __getitem__(self, __location: Location) -> any:
+    def __getitem__(self, __location: Location) -> Any:
         x, y = __location
         return super().__getitem__(x)[y]
 
-    def __setitem__(self, __location: Location, __value: any) -> None:
+    def __setitem__(self, __location: Location, __value: Any) -> None:
         x, y = __location
         super().__getitem__(x)[y] = __value
 
@@ -61,7 +60,7 @@ class Map(list):
         return board
 
     # 相关功能methods
-    def update(self, dictionary: Dict[Location, any]) -> bool:
+    def update(self, dictionary: Dict[Location, Any]) -> bool:
         """使用字典更新地图内容
 
         Args:
@@ -81,24 +80,24 @@ class Map(list):
             self[location] = player
         return True
 
-    def isFullOf(self, target: any) -> bool:
+    def isFullOf(self, target: Any) -> bool:
         """判断地图是否存在非target因素
         warning: 该判断逻辑为逻辑运算符 `=`,非 `is`
 
         Args:
-            target (any): 检测的目标内容
+            target (Any): 检测的目标内容
 
         Returns:
             bool: 是否填满`target` T/F
         """
         return not any(any(item != target for item in line) for line in self)
 
-    def isExist(self, target: any) -> bool:
+    def isExist(self, target: Any) -> bool:
         """判断地图是否存在target因素
         warning: 该判断逻辑为运算 `in`
 
         Args:
-            target (any): 检测的目标内容
+            target (Any): 检测的目标内容
 
         Returns:
             bool: 是否存在`target` T/F
@@ -107,11 +106,14 @@ class Map(list):
 
 
 class ClockBase(threadingLib.Thread):
-    def __init__(self, threading: list, struck_time: int, stop: bool = False):
+    def __init__(self, 
+                 threading: List[Digit, Digit, callable, int, dict], 
+                 struck_time: Digit, 
+                 stop: bool = False) -> None:
         """Clock事件耦合触发器
 
         Args:
-            threading (list): 线程事件
+            threading (List[Digit, Digit, callable, int, dict]): 线程事件
                 example: `[[struck_time, increment_time, threading, pop, kwargs], ...]`
                     args:
                         `struck_time`: 触发时间, 当`now`大于该值时触发事件
@@ -119,28 +121,28 @@ class ClockBase(threadingLib.Thread):
                         `threading`: 触发的事件, 请注意并不提供相关参数传递方法, 
                             若有需求请使用闭包函数`closure`
                         `pop`: 触发事件次数, `-1`为无限
-            struck_time (int): 下一次触发的时间
+            struck_time (Digit): 下一次触发的时间
         """
         super().__init__()
-        self.threading = threading  # 更新线程CallBack
-        self.struck_time = struck_time  # 检测更新时间
-        self.__stop = stop
+        self.threading: List[Digit, Digit, callable, int, dict] = threading  # 更新线程CallBack
+        self.struck_time: Digit = struck_time  # 检测更新时间
+        self.__stop: bool = stop
 
-        self.relative_start = time.perf_counter() * 1000
+        self.relative_start: Digit = time.perf_counter() * 1000
 
-    def thread_add(self, thread):
+    def thread_add(self, thread: List[Digit, Digit, callable, int, dict]):
         """thread example:`[struck_time, increment_time, threading, pop, kwargs]`"""
         self.threading.append(thread)
 
     @property
-    def now(self):
+    def now(self) -> Digit:
         return time.perf_counter() * 1000 - self.relative_start  # 相对时间(ms)
 
-    def stop(self):
+    def stop(self) -> None:
         self.__stop = True
 
     def trigger(self):
-        pop_stack = []
+        pop_stack: List[int] = []
         for idx, (struck_time, increment_time, threading, pop, kwargs) in enumerate(self.threading):
             # TODO
             if self.now > struck_time:
@@ -162,11 +164,11 @@ class ClockBase(threadingLib.Thread):
 
         yield not not self.threading, 'Everything is alright'  # -可暂时设为False用于测试
 
-    def run(self):
+    def run(self) -> None:
         # TODO
         while True:
             if self.__stop:
-                exit(self.__stop)
+                return 
             results = self.trigger()
 
             for result in results:
@@ -177,7 +179,7 @@ class ClockBase(threadingLib.Thread):
 
             time.sleep(self.struck_time // 1000)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.threading}'
 
 
