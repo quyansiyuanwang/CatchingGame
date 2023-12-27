@@ -47,6 +47,17 @@ class Person(Item):
         self.last_move_time: float = clock.now
 
     def move(self, toward: Toward) -> None:
+        """
+        *如何重载
+        1. 你应该尽量遵循该方法的格式
+        2. 你应该在重载的方法内做出事件判断
+            包括但不限于
+                - 移动速度判断
+                - 边界判断
+                - 走到新位置的事件判断
+                ...
+        3. 并做出相应的返回值
+        """
         raise NotImplementedError(
             'The method should be override instead of using it.')
 
