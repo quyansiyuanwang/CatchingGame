@@ -1,12 +1,11 @@
 import time
 import threading as threadingLib
-from typing import Dict, Tuple, Final, Any, Literal, List, Union, Callable
+from typing import Dict, Tuple, Final, Any, Literal, List
 
 
 Location = Toward = Tuple[int, int]
-Digit = Union[int, float]
+Digit = int | float
 MoveInfo = Dict[Literal['Location', 'Item'], Any]
-ThreadFormat = List[Tuple[Digit, Digit, Callable, int, MoveInfo]]
 
 class GameStateConsts:
     MeetGhost: Final[str] = 'You was caught by ghost'
@@ -18,11 +17,11 @@ class GameStateConsts:
 
 
 class Map(list):
-    def __init__(self, arg: List[list], a: int, b: int) -> None:
+    def __init__(self, arg: Any, a: int, b: int) -> None:
         """地图初始化
 
         Args:
-            arg (List[list]): 继承list的第一个arg
+            arg (Any): 继承list的第一个arg
         """
         # 以下属性不应被修改
         # 基础类全局变量区
@@ -108,13 +107,13 @@ class Map(list):
 
 class ClockBase(threadingLib.Thread):
     def __init__(self, 
-                 threads: ThreadFormat, 
+                 threading: List[Digit, Digit, callable, int, dict], 
                  struck_time: Digit, 
                  stop: bool = False) -> None:
         """Clock事件耦合触发器
 
         Args:
-            threads (ThreadFormat): 线程事件
+            threading (List[Digit, Digit, callable, int, dict]): 线程事件
                 example: `[[struck_time, increment_time, threading, pop, kwargs], ...]`
                     args:
                         `struck_time`: 触发时间, 当`now`大于该值时触发事件
@@ -125,13 +124,13 @@ class ClockBase(threadingLib.Thread):
             struck_time (Digit): 下一次触发的时间
         """
         super().__init__()
-        self.threads: ThreadFormat = threads  # 更新线程CallBack
+        self.threading: List[Digit, Digit, callable, int, dict] = threading  # 更新线程CallBack
         self.struck_time: Digit = struck_time  # 检测更新时间
         self.__stop: bool = stop
 
         self.relative_start: Digit = time.perf_counter() * 1000
 
-    def thread_add(self, thread: ThreadFormat):
+    def thread_add(self, thread: List[Digit, Digit, callable, int, dict]):
         """thread example:`[struck_time, increment_time, threading, pop, kwargs]`"""
         self.threading.append(thread)
 
@@ -144,14 +143,14 @@ class ClockBase(threadingLib.Thread):
 
     def trigger(self):
         pop_stack: List[int] = []
-        for idx, (struck_time, increment_time, threading, pop, kwargs) in enumerate(self.threads):
+        for idx, (struck_time, increment_time, threading, pop, kwargs) in enumerate(self.threading):
             # TODO
             if self.now > struck_time:
-                self.threads[idx][0] += increment_time
+                self.threading[idx][0] += increment_time
                 yield threading()
 
-                self.threads[idx][3] -= 1
-                if self.threads[idx][3] == 0:
+                self.threading[idx][3] -= 1
+                if self.threading[idx][3] == 0:
                     pop_stack.append(idx)
 
             if self.now < struck_time:
@@ -159,11 +158,11 @@ class ClockBase(threadingLib.Thread):
 
         while pop_stack:
             tar_idx = pop_stack.pop()
-            self.threads.pop(tar_idx)
+            self.threading.pop(tar_idx)
 
-        self.threads.sort(key=lambda x: x[0])
+        self.threading.sort(key=lambda x: x[0])
 
-        yield not not self.threads, 'Everything is alright'  # -可暂时设为False用于测试
+        yield not not self.threading, 'Everything is alright'  # -可暂时设为False用于测试
 
     def run(self) -> None:
         # TODO
@@ -181,7 +180,7 @@ class ClockBase(threadingLib.Thread):
             time.sleep(self.struck_time // 1000)
 
     def __str__(self) -> str:
-        return f'{self.threads}'
+        return f'{self.threading}'
 
 
 def closure_device(func: callable, *args, **kwargs):
@@ -213,7 +212,6 @@ def _test():
         print('world')
         time.sleep(1)
         t -= 1
-    c.stop()
     c.join()
 
 
