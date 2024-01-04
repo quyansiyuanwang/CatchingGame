@@ -132,7 +132,7 @@ class ClockBase(threadingLib.Thread):
 
     def thread_add(self, thread: List[Digit, Digit, callable, int, dict]):
         """thread example:`[struck_time, increment_time, threading, pop, kwargs]`"""
-        self.threading.append(thread)
+        self.threads.append(thread)
 
     @property
     def now(self) -> Digit:
